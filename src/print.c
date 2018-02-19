@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 18:05:52 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/01/23 20:34:27 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/02/13 11:01:24 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_vector3(t_vector3 ***vectors, int size)
 	while (i < size)
 	{
 		printf("vector #%d\t%p\nx = %d\ty = %d\tz = %f\n", i, (*(*vectors + i)),
-			   (*(*vectors + i))->x, (*(*vectors + i))->y, (*(*vectors + i))->z);
+			(*(*vectors + i))->x, (*(*vectors + i))->y, (*(*vectors + i))->z);
 		i++;
 	}
 }

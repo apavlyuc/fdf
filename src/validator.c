@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 18:12:59 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/01/23 18:45:28 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/02/13 11:36:27 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,19 @@ static void		fill_vec3(char *line, t_vector3 ***vec3, int n, int parts)
 	free(arr);
 }
 
-static void		read_cycle(char **line, int fd, t_vector3 ***vec3, int lines,
-							int	parts)
+static void		read_cycle(char **line, int fd, t_vector3 ***vec3, int lines)
 {
 	int			i;
 	int			ret;
+	int			parts;
 
 	i = 0;
+	parts = words_count(*line, ' ');
 	while (++i < lines)
 	{
 		free(*line);
-		if ((ret = get_next_line(fd, line)) != -1 && parts == words_count(*line, ' '))
+		if ((ret = get_next_line(fd, line)) != -1
+			&& parts == words_count(*line, ' '))
 			fill_vec3(*line, vec3, i, parts);
 		else
 		{
@@ -80,11 +82,12 @@ static t_plane	*read_vec3(char *file_name, t_vector3 ***vec3, t_plane *plane)
 	int			fd;
 	int			i;
 
-	if ((lines = ft_linecount(file_name)) <= 0 || (fd = open(file_name, O_RDONLY))
-		== -1 || get_next_line(fd, &line) <= 0)
+	if ((lines = ft_linecount(file_name)) <= 0 ||
+		(fd = open(file_name, O_RDONLY)) == -1 || get_next_line(fd, &line) <= 0)
 		return (NULL);
 	parts = words_count(line, ' ');
-	if (!(*vec3 = (t_vector3 **)malloc(sizeof(t_vector3 *) * (parts * lines + 1))))
+	if (!(*vec3 = (t_vector3 **)malloc(sizeof(t_vector3 *)
+									* (parts * lines + 1))))
 		return (NULL);
 	(*vec3)[parts * lines] = NULL;
 	i = -1;
@@ -92,7 +95,7 @@ static t_plane	*read_vec3(char *file_name, t_vector3 ***vec3, t_plane *plane)
 		if (!((*vec3)[i] = (t_vector3 *)malloc(sizeof(t_vector3))))
 			return (free_iter(vec3, i));
 	fill_vec3(line, vec3, -1, parts);
-	read_cycle(&line, fd, vec3, lines, parts);
+	read_cycle(&line, fd, vec3, lines);
 	close(fd);
 	(*plane).rows = lines;
 	(*plane).colums = parts;

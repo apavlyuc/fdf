@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 18:36:47 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/01/26 19:37:32 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/02/13 10:57:38 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
+
+static void	free_vec3(t_vector3 ***vec3, int size)
+{
+	int	i;
+
+	i = -1;
+	while (++i < size)
+	{
+		free(*(*vec3 + i));
+	}
+}
 
 void		convert(t_vector2 **vec2, t_vector3 ***vec3, int size, float angle)
 {
