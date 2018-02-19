@@ -1,47 +1,61 @@
-/* ************************************************************************** */
+/* ********************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: modnosum <modnosum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 18:10:09 by apavlyuc          #+#    #+#             */
-/*   Updated: 2017/12/04 02:21:47 by apavlyuc         ###   ########.fr       */
+/*   Created: 2017/11/16 17:00:57 by modnosum          #+#    #+#             */
+/*   Updated: 2018/02/19 19:26:32 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/* ********************************************************************** */
 
-static	int	get_number(const char *str)
+#include <libft.h>
+#include <stdio.h>
+static int	get_system(const char *str)
 {
-	unsigned long int	n;
-	int					i;
-	int					sign;
+	if (*str == '0' && (*(str + 1) == 'x' || *(str + 1) == 'X'))
+		return (16);
+	if (*str == '0')
+		return (8);
+	else
+		return (10);
+}
 
-	i = -1;
-	sign = 1;
-	n = 0;
-	if (*str == '-')
-	{
-		sign = -1;
-		str++;
-	}
-	else if (*str == '+')
-		str++;
-	while (*(str + ++i) <= '9' && *(str + i) >= '0')
-	{
-		if ((n > 922337203685477580 || (n == 922337203685477580
-										&& *(str + i) - '0' > 7)) && sign == 1)
-			return (-1);
-		if ((n > 922337203685477580 || (n == 922337203685477580
-										&& *(str + i) - '0' > 8)) && sign == -1)
-			return (0);
-		n = n * 10 + (*(str + i) - 48);
-	}
-	return ((int)(n * sign));
+static int	ft_ishex(const char *str)
+{
+	if (ft_isdigit(*str) || ((*str >= 'A' && *str <= 'Z') ||
+							(*str >= 'a' && *str <= 'z')))
+		return (1);
+	else
+		return (0);
 }
 
 int			ft_atoi(const char *str)
 {
-	while ((*str >= 9 && *str <= 13) || *str == ' ')
+	int		number;
+	int		system;
+	char	sign;
+	char	n;
+
+	sign = 1;
+	while (*str == ' ' || *str == '\t' || *str == '\n')
 		str++;
-	return (get_number(str));
+	system = get_system(str);
+	if (!(number = 0) && (system == 16 || system == 8))
+		str += (system == 16) ? (2) : (1);
+	else if ((*str == '-' || *str == '+'))
+	{
+		sign = (*str == '-') ? -1 : 1;
+		str++;
+	}
+	while ((ft_isdigit(*str) && (system == 8 || system == 10)) ||
+		   (ft_ishex(str) && system == 16))
+	{
+		n = ft_tolower(*str);
+		n = (n >= 'a') ? (n - 'a' + 10) : (n - '0');
+		number = number * system + n;
+		str++;
+	}
+	return (number * sign);
 }

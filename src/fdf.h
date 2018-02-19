@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 09:25:00 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/02/13 15:32:40 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/02/19 19:54:46 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ typedef struct	s_vector3
 	int		x;
 	int		y;
 	float	z;
+	int		color;
 }				t_vector3;
+
 typedef struct	s_vector2
 {
 	float x;
@@ -35,13 +37,13 @@ typedef struct	s_plane
 }				t_plane;
 typedef struct	s_mlx
 {
-	int		*endian;
-	int		*bpp;
-	int		*sizel;
+	int		endian;
+	int		bpp;
 	char	*addr;
 	void	*mlx;
 	void	*win;
 	void	*img;
+	int		sizel;
 }				t_mlx;
 
 /*
@@ -57,6 +59,6 @@ void			convert(t_vector2 **vec, t_vector3 ***v3, int size, float a);
 t_plane			*is_valid(int ac, char **av, t_vector3 ***vec3);
 
 void			writer(t_mlx *mlx, t_vector3 ***v3, t_plane *plane, float a);
-void			drow_line(void *mlx, void *win, float *arr);
+void			drow_line(t_mlx *mlx, float *arr);
 
 #endif

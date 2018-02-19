@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 16:14:49 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/01/22 19:34:05 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/02/19 19:35:29 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ char				*ft_replace(char *str, char *old, char *new);
 char				*ft_strrev(char *s);
 int					get_next_line(const int fd, char **line);
 int					words_count(const char *s, char del);
+float				ft_atof(const char *s);
 
 #endif

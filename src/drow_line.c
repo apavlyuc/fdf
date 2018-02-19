@@ -6,12 +6,13 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 19:24:13 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/02/13 14:59:17 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/02/19 19:43:58 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "../libft/libft.h"
+#include "fdf.h"
 
 static void		swap(float *a, float *b)
 {
@@ -44,8 +45,13 @@ static void		swaper(float **arr, int *steep)
 		swap(*arr + 1, *arr + 3);
 	}
 }
+static void		put_pixel(t_mlx *mlx, int x, int y, int color)
+{
+	*(int *)(mlx->addr + x * mlx->bpp / 8 + y * mlx->sizel) =
+		mlx_get_color_value(mlx->mlx, color);
+}
 
-void			drow_line(void *mlx, void *win, float *arr)
+void			drow_line(t_mlx *mlx, float *arr)
 {
 	int			steep;
 	float		d[2];
@@ -62,9 +68,9 @@ void			drow_line(void *mlx, void *win, float *arr)
 	while (++(tmp[0]) < arr[2])
 	{
 		if (steep)
-			mlx_pixel_put(mlx, win, tmp[1], tmp[0], 0x000FFFF0);
+			put_pixel(mlx, tmp[1], tmp[0], 0x009400d3);
 		else
-			mlx_pixel_put(mlx, win, tmp[0], tmp[1], 0x00F0FF00);
+			put_pixel(mlx, tmp[0], tmp[1], 0x000035d4);
 		err[0] += err[1];
 		if (err[0] > d[0])
 		{

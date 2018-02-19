@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 18:12:59 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/02/13 11:36:27 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/02/19 19:59:37 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		fill_vec3(char *line, t_vector3 ***vec3, int n, int parts)
 	{
 		(*(*vec3 + i))->x = j;
 		(*(*vec3 + i))->y = i / parts;
-		(*(*vec3 + i))->z = atof(arr[j]);
+		(*(*vec3 + i))->z = ft_atof(arr[j]);
 		free(arr[j]);
 		i++;
 	}
@@ -111,8 +111,6 @@ t_plane			*is_valid(int ac, char **av, t_vector3 ***vec3)
 		ft_putstr("usage: fdf map_file\n");
 		exit(-1);
 	}
-	if (!vec3)
-		exit(-1);
 	plane = (t_plane *)malloc(sizeof(t_plane));
 	if (!(plane = read_vec3(av[1], vec3, plane)))
 	{
