@@ -5,8 +5,15 @@ target=fdf
 
 .PHONY: all clean fclean re libft
 
+OS = $(shell uname)
+
 all: libft
+ifeq ($(OS),Darwin)
 	$(CC) -o $(target) $(files) -lmlx -framework OpenGL -framework AppKit
+else
+	$(MAKE) -C ./minilibx
+	$(CC) -o $(target) $(files) ./minilibx/libmlx.a -lmlx -lXext -lX11 -L ./minilibx -I ./minilibx -lm
+endif
 libft:
 	$(MAKE) -C ./libft/ all
 clean:

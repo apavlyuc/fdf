@@ -16,13 +16,11 @@ float				ft_atof(const char *str)
 {
 	float			f;
 	int				p;
-	int				sign;
 
 	f = ft_atoi(str);
 	while (*str == ' ' || *str == '\t' || *str == '\n')
 		str++;
-	sign = (*str == '-' ? -1 : 1);
-	str = (*str == '-' || *str == '+') ? str++ : str;
+	str = (*str == '-' || *str == '+') ? (str + 1) : (str);
 	while (ft_isdigit(*str))
 		str++;
 	if (*str == '.')
