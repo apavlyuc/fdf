@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 19:24:13 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/02/19 19:43:58 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/03/05 18:38:47 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,19 @@ static void		swaper(float **arr, int *steep)
 }
 static void		put_pixel(t_mlx *mlx, int x, int y, int color)
 {
-	*(int *)(mlx->addr + x * mlx->bpp / 8 + y * mlx->sizel) =
-		mlx_get_color_value(mlx->mlx, color);
+	int			x1;
+	int			y1;
+
+	x1 = x * mlx->bpp / 8;
+	y1 = y * mlx->sizel;
+	if ((x1 + y1) < mlx->size * mlx->sizel &&
+		(x1 + y1) > 0 && x < mlx->size && x > 0 &&
+		y < mlx->size && y > 0)
+		*(int *)(mlx->addr + x1 + y1) =
+			mlx_get_color_value(mlx->mlx, color);
 }
 
-void			drow_line(t_mlx *mlx, float *arr)
+void			drow_line(t_mlx *mlx, float *arr, int color)
 {
 	int			steep;
 	float		d[2];
@@ -68,9 +76,9 @@ void			drow_line(t_mlx *mlx, float *arr)
 	while (++(tmp[0]) < arr[2])
 	{
 		if (steep)
-			put_pixel(mlx, tmp[1], tmp[0], 0x009400d3);
+			put_pixel(mlx, tmp[1], tmp[0], color);
 		else
-			put_pixel(mlx, tmp[0], tmp[1], 0x000035d4);
+			put_pixel(mlx, tmp[0], tmp[1], color);
 		err[0] += err[1];
 		if (err[0] > d[0])
 		{

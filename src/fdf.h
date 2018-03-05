@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 09:25:00 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/02/19 19:54:46 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/03/05 19:54:40 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,23 @@ typedef struct	s_vector3
 
 typedef struct	s_vector2
 {
-	float x;
-	float y;
+	float	x;
+	float	y;
+	int		color;
 }				t_vector2;
+
+typedef struct	s_vectors
+{
+	t_vector3 **vec3;
+	t_vector2 *vec2;
+}				t_vectors;
+
 typedef struct	s_plane
 {
 	int rows;
 	int colums;
 }				t_plane;
+
 typedef struct	s_mlx
 {
 	int		endian;
@@ -44,21 +53,16 @@ typedef struct	s_mlx
 	void	*win;
 	void	*img;
 	int		sizel;
+	t_plane	*plane;
+	int		size;
 }				t_mlx;
 
-/*
-**		file: print.c
-*/
 void			print_vector2(t_vector2 **vectors, int size);
 void			print_vector3(t_vector3 ***vectors, int size);
 
 void			convert(t_vector2 **vec, t_vector3 ***v3, int size, float a);
-/*
-**		file: validator.c
-*/
 t_plane			*is_valid(int ac, char **av, t_vector3 ***vec3);
-
-void			writer(t_mlx *mlx, t_vector3 ***v3, t_plane *plane, float a);
-void			drow_line(t_mlx *mlx, float *arr);
+void			write_image(t_mlx *mlx, t_vectors *vec, t_plane *plane);
+void			drow_line(t_mlx *mlx, float *arr, int color);
 
 #endif

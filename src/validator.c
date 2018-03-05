@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 18:12:59 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/02/19 19:59:37 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:59:09 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void		fill_vec3(char *line, t_vector3 ***vec3, int n, int parts)
 	static int	i;
 	int			j;
 	char		**arr;
+	char		*p;
 
 	if (!(arr = ft_strsplit(line, ' ')))
 		exit(-1);
@@ -33,6 +34,10 @@ static void		fill_vec3(char *line, t_vector3 ***vec3, int n, int parts)
 		(*(*vec3 + i))->x = j;
 		(*(*vec3 + i))->y = i / parts;
 		(*(*vec3 + i))->z = ft_atof(arr[j]);
+		if ((p = ft_strchr(arr[j], ',')))
+			(*(*vec3 + i))->color = ft_atoi(p + 1);
+		else
+			(*(*vec3 + i))->color = 0x009400d3;
 		free(arr[j]);
 		i++;
 	}

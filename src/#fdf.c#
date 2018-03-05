@@ -64,6 +64,7 @@ int				main(int ac, char **av)
 	adapt_image(&(vec.vec2), (mlx.plane)->rows * (mlx.plane)->colums + 1);
 	write_image(&mlx, &vec, mlx.plane);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.img, 0, 0);
+	
 	mlx_loop(mlx.mlx);
 	return (0);
 }
