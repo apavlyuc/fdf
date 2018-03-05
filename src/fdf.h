@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 09:25:00 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/03/05 19:54:40 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/03/05 21:05:33 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 typedef struct	s_vector3
 {
+	float	z;
 	int		x;
 	int		y;
-	float	z;
 	int		color;
 }				t_vector3;
 
@@ -46,15 +46,16 @@ typedef struct	s_plane
 
 typedef struct	s_mlx
 {
-	int		endian;
-	int		bpp;
-	char	*addr;
-	void	*mlx;
-	void	*win;
-	void	*img;
-	int		sizel;
-	t_plane	*plane;
-	int		size;
+	int			endian;
+	int			bpp;
+	char		*addr;
+	void		*mlx;
+	void		*win;
+	void		*img;
+	int			sizel;
+	t_plane		*plane;
+	int			size;
+	t_vectors	vec;
 }				t_mlx;
 
 void			print_vector2(t_vector2 **vectors, int size);
