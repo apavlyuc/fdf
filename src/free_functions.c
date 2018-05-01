@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 17:40:57 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/03/09 02:04:21 by apavlyuc         ###   ########.fr       */
+/*   Created: 2018/03/07 18:23:40 by apavlyuc          #+#    #+#             */
+/*   Updated: 2018/03/07 18:39:01 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "fdf.h"
+#include "mlx.h"
+#include <stdlib.h>
 
-int		ft_strcmp(const char *s1, const char *s2)
+void	esc_free(t_mlx *mlx)
 {
-	int	i;
+	free(mlx->vec.vec2);
+	free(mlx->vec.vec3);
+	free(mlx->plane);
+	exit(1);
+}
 
-	i = -1;
-	while (*(s1 + ++i) != '\0' && *(s2 + i) != '\0')
-		if (*(s1 + i) != *(s2 + i))
-			return (*(unsigned char *)(s1 + i) -
-					*(unsigned char *)(s2 + i));
-			return (*(unsigned char *)(s1 + i) - *(unsigned char *)(s2 + i));
+void	plane_free(t_mlx *mlx)
+{
+	free(mlx->plane);
+	exit(1);
 }

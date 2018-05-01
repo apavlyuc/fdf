@@ -1,28 +1,33 @@
+target = fdf
+libft = ./libft/libft.a
+
+sources_d = ./src
+objects_d = ./obj
+
+sources := $(shell find $(sources_d) -type f -name "*.c")
+objects := $(patsubst $(sources_d)%,$(objects_d)%,$(sources:.c=.o))
+
 CC=gcc
-flags=-Wall -Werror -Wextra
-files=./src/*.c ./libft/libft.a
-target=fdf
+CFLAGS ?= -Wall -Werror -Wextra
+IFLAGS := -I ./inc
 
 .PHONY: all clean fclean re libft
 
-OS = $(shell uname)
+all: $(target)
 
-all: libft
-ifeq ($(OS),Darwin)
-	$(CC) -o $(target) $(files) -lmlx -framework OpenGL -framework AppKit
-else
-	$(MAKE) -C ./minilibx
-	$(CC) -o $(target) $(files) ./minilibx/libmlx.a -lmlx -lXext -lX11 -L ./minilibx -I ./minilibx -lm
-endif
-libft:
-	$(MAKE) -C ./libft/ all
+$(target): $(objects) $(libft)
+	$(CC) -o $@ $^ -lmlx -framework OpenGL -framework AppKit
+$(objects_d)/%.o: $(sources_d)/%.c | $(objects_d)
+	$(CC) -c $< -o $@ $(CFLAGS) $(IFLAGS)
+$(objects_d):
+	mkdir -p $@
+
+$(libft):
+	@$(MAKE) -C ./libft/ all
 clean:
-	rm -f ./src/*~
-	rm -f ./src/*#
-	rm -f *.o
-	rm -f ./libft/*.o
-	rm -f ./src/*.o
+	@rm -fr $(objects_d)
+	@$(MAKE) -C ./libft/ clean
 fclean: clean
-	rm -f libft.a
-	rm -f $(target)
+	@rm -f $(target)
+	@$(MAKE) -C ./libft/ fclean
 re: fclean all

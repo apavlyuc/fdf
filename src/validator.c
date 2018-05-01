@@ -6,7 +6,7 @@
 /*   By: apavlyuc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/22 18:12:59 by apavlyuc          #+#    #+#             */
-/*   Updated: 2018/03/01 18:59:09 by apavlyuc         ###   ########.fr       */
+/*   Updated: 2018/03/10 01:29:06 by apavlyuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,99 +15,85 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
-static void		fill_vec3(char *line, t_vector3 ***vec3, int n, int parts)
+static int		fill_vec3(char *line, t_vector3 **vec3, t_plane *plane)
 {
-	static int	i;
+	static int	i = 0;
 	int			j;
 	char		**arr;
 	char		*p;
 
 	if (!(arr = ft_strsplit(line, ' ')))
-		exit(-1);
-	if (n == -1)
-		i = 0;
+		return (0);
 	j = -1;
-	while (++j < parts)
+	while (++j < plane->colums)
 	{
-		(*(*vec3 + i))->x = j;
-		(*(*vec3 + i))->y = i / parts;
-		(*(*vec3 + i))->z = ft_atof(arr[j]);
+		(*vec3 + i)->x = j;
+		(*vec3 + i)->y = i / plane->colums;
+		(*vec3 + i)->z = ft_atof(arr[j]);
 		if ((p = ft_strchr(arr[j], ',')))
-			(*(*vec3 + i))->color = ft_atoi(p + 1);
+			(*vec3 + i)->color = ft_atoi(p + 1);
 		else
-			(*(*vec3 + i))->color = 0x009400d3;
+			(*vec3 + i)->color = 0x009400d3;
 		free(arr[j]);
 		i++;
 	}
 	free(arr);
+	return (1);
 }
 
-static void		read_cycle(char **line, int fd, t_vector3 ***vec3, int lines)
+static int		read_cycle(char **line, int fd, t_vector3 **vec3, t_plane *pl)
 {
 	int			i;
 	int			ret;
-	int			parts;
 
 	i = 0;
-	parts = words_count(*line, ' ');
-	while (++i < lines)
+	while (++i < pl->rows)
 	{
 		free(*line);
 		if ((ret = get_next_line(fd, line)) != -1
-			&& parts == words_count(*line, ' '))
-			fill_vec3(*line, vec3, i, parts);
+			&& pl->colums == words_count(*line, ' '))
+		{
+			if (!fill_vec3(*line, vec3, pl))
+			{
+				free(*line);
+				return (0);
+			}
+		}
 		else
 		{
-			i = -1;
-			while (++i < lines * parts)
-				free((*vec3)[i]);
-			free(*vec3);
 			if (ret != -1)
 				free(*line);
-			exit(-1);
+			return (0);
 		}
 	}
 	free(*line);
+	return (1);
 }
 
-static void		*free_iter(t_vector3 ***vec3, int i)
-{
-	while (--i >= 0)
-		free((*vec3)[i]);
-	return (NULL);
-}
-
-static t_plane	*read_vec3(char *file_name, t_vector3 ***vec3, t_plane *plane)
+static t_plane	*read_vec3(char *file_name, t_vector3 **vec3, t_plane *plane)
 {
 	char		*line;
-	int			lines;
-	int			parts;
 	int			fd;
-	int			i;
 
-	if ((lines = ft_linecount(file_name)) <= 0 ||
+	if (((*plane).rows = ft_linecount(file_name)) <= 0 ||
 		(fd = open(file_name, O_RDONLY)) == -1 || get_next_line(fd, &line) <= 0)
 		return (NULL);
-	parts = words_count(line, ' ');
-	if (!(*vec3 = (t_vector3 **)malloc(sizeof(t_vector3 *)
-									* (parts * lines + 1))))
+	(*plane).colums = words_count(line, ' ');
+	(*plane).area = (*plane).rows * (*plane).colums;
+	if (!(*vec3 = (t_vector3 *)malloc(sizeof(t_vector3) * (*plane).area)))
 		return (NULL);
-	(*vec3)[parts * lines] = NULL;
-	i = -1;
-	while (++i < parts * lines)
-		if (!((*vec3)[i] = (t_vector3 *)malloc(sizeof(t_vector3))))
-			return (free_iter(vec3, i));
-	fill_vec3(line, vec3, -1, parts);
-	read_cycle(&line, fd, vec3, lines);
+	if (!fill_vec3(line, vec3, plane) || !read_cycle(&line, fd, vec3, plane))
+	{
+		free(*vec3);
+		close(fd);
+		return (NULL);
+	}
 	close(fd);
-	(*plane).rows = lines;
-	(*plane).colums = parts;
 	return (plane);
 }
 
-t_plane			*is_valid(int ac, char **av, t_vector3 ***vec3)
+t_plane			*is_valid(int ac, char **av, t_vector3 **vec3)
 {
 	t_plane		*plane;
 
